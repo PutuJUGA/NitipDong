@@ -1,0 +1,18 @@
+1. Masalah
+Ketika satu orang perwakilan sedang keluar membeli makanan (misalnya saat antre di Tahu Telor Budhe Yuni atau DIMSUM TITI), pesanan titipan dari teman-teman sering berantakan karena hanya dikirim berceceran lewat grup chat. Pembeli kebingungan menghitung total tagihan untuk setiap orang, dan sangat sering terjadi kendala teman lupa mengganti uang setelah makanan tiba.
+
+2. Target
+Mahasiswa, anak kos, dan pekerja kantoran dengan circle pertemanan aktif, yang memiliki kebiasaan menitip beli makanan, minuman, atau barang ke satu orang secara kolektif.
+
+3. Solusi
+Sistem catatan digital sekali pakai (*disposable list*) yang merekap seluruh daftar titipan dalam satu antarmuka, mengotomatiskan kalkulasi harga total, dan melacak status pelunasan (utang) dari setiap individu.
+
+4. Product
+NitipDong, sebuah aplikasi web responsif dan ringan yang dibangun menggunakan Vue.js dan Tailwind CSS, dirancang khusus dengan antarmuka yang efisien agar mudah diakses dan diketik melalui peramban ponsel saat pengguna sedang berdiri di depan kasir.
+
+5. Core Fitur
+
+Formulir Entri Cepat: Kolom input sederhana untuk memasukkan Nama Penitip, Detail Pesanan, dan Nominal Harga Satuan.
+Kalkulasi Tagihan Otomatis: Fitur yang langsung menjumlahkan total harga keseluruhan secara seketika, menghilangkan kebutuhan untuk membuka aplikasi kalkulator terpisah.
+Indikator Status Lunas: Checkbox interaktif di sebelah nama setiap penitip untuk menandai secara visual siapa yang sudah mentransfer uang ganti dan siapa yang masih berutang.
+Generator Tagihan WhatsApp: Tombol satu kali klik yang mengubah seluruh rekapitulasi pesanan dan status bayar menjadi teks berformat rapi, siap untuk disalin dan dikirim ke grup tongkrongan.
