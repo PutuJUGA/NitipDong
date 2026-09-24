@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  /* Sembunyikan icon show/hide password bawaan browser (Edge & Windows) */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none !important;
+  }
+}
+
+/* --- Card 3D & Traveling Light Beam Animations --- */
+@keyframes beam-top {
+  0% {
+    left: -50%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  30% {
+    opacity: 0.95;
+    filter: blur(2px);
+  }
+  70% {
+    left: 100%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-right {
+  0% {
+    top: -50%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  30% {
+    opacity: 0.95;
+    filter: blur(2px);
+  }
+  70% {
+    top: 100%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-bottom {
+  0% {
+    right: -50%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  30% {
+    opacity: 0.95;
+    filter: blur(2px);
+  }
+  70% {
+    right: 100%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  100% {
+    right: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes beam-left {
+  0% {
+    bottom: -50%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  30% {
+    opacity: 0.95;
+    filter: blur(2px);
+  }
+  70% {
+    bottom: 100%;
+    opacity: 0.2;
+    filter: blur(1px);
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes card-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px 2px rgba(249, 115, 22, 0.15), 0 0 35px 5px rgba(251, 191, 36, 0.12);
+    opacity: 0.5;
+  }
+  50% {
+    box-shadow: 0 0 28px 8px rgba(249, 115, 22, 0.35), 0 0 50px 12px rgba(251, 191, 36, 0.25);
+    opacity: 0.9;
+  }
+}
+
+.animate-beam-top {
+  animation: beam-top 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-beam-right {
+  animation: beam-right 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.85s infinite;
+}
+
+.animate-beam-bottom {
+  animation: beam-bottom 3.5s cubic-bezier(0.4, 0, 0.2, 1) 1.7s infinite;
+}
+
+.animate-beam-left {
+  animation: beam-left 3.5s cubic-bezier(0.4, 0, 0.2, 1) 2.55s infinite;
+}
+
+/* ========================================================
+   DYNAMIC AVATAR THEMES FOR MAIN MENU
+   ======================================================== */
+.theme-budi {
+  --theme-primary: #f97316;
+  --theme-primary-hover: #ea580c;
+  --theme-secondary: #f59e0b;
+  --theme-light-bg: rgba(249, 115, 22, 0.09);
+  --theme-border: rgba(249, 115, 22, 0.25);
+  --theme-shadow: rgba(249, 115, 22, 0.35);
+  --theme-dark-bg: rgba(249, 115, 22, 0.18);
+  --theme-dark-text: #fb923c;
+  --theme-gradient: linear-gradient(to right, #f97316, #f59e0b);
+}
+
+.theme-fathan {
+  --theme-primary: #2563eb;
+  --theme-primary-hover: #1d4ed8;
+  --theme-secondary: #06b6d4;
+  --theme-light-bg: rgba(37, 99, 235, 0.09);
+  --theme-border: rgba(37, 99, 235, 0.25);
+  --theme-shadow: rgba(37, 99, 235, 0.35);
+  --theme-dark-bg: rgba(37, 99, 235, 0.18);
+  --theme-dark-text: #60a5fa;
+  --theme-gradient: linear-gradient(to right, #2563eb, #06b6d4);
+}
+
+.theme-radiz {
+  --theme-primary: #8b5cf6;
+  --theme-primary-hover: #7c3aed;
+  --theme-secondary: #d946ef;
+  --theme-light-bg: rgba(139, 92, 246, 0.09);
+  --theme-border: rgba(139, 92, 246, 0.25);
+  --theme-shadow: rgba(139, 92, 246, 0.35);
+  --theme-dark-bg: rgba(139, 92, 246, 0.18);
+  --theme-dark-text: #a78bfa;
+  --theme-gradient: linear-gradient(to right, #8b5cf6, #d946ef);
+}
+
+.theme-putri {
+  --theme-primary: #f43f5e;
+  --theme-primary-hover: #e11d48;
+  --theme-secondary: #ec4899;
+  --theme-light-bg: rgba(244, 63, 94, 0.09);
+  --theme-border: rgba(244, 63, 94, 0.25);
+  --theme-shadow: rgba(244, 63, 94, 0.35);
+  --theme-dark-bg: rgba(244, 63, 94, 0.18);
+  --theme-dark-text: #fb7185;
+  --theme-gradient: linear-gradient(to right, #f43f5e, #ec4899);
+}
+
+.theme-siti {
+  --theme-primary: #10b981;
+  --theme-primary-hover: #059669;
+  --theme-secondary: #14b8a6;
+  --theme-light-bg: rgba(16, 185, 129, 0.09);
+  --theme-border: rgba(16, 185, 129, 0.25);
+  --theme-shadow: rgba(16, 185, 129, 0.35);
+  --theme-dark-bg: rgba(16, 185, 129, 0.18);
+  --theme-dark-text: #34d399;
+  --theme-gradient: linear-gradient(to right, #10b981, #14b8a6);
+}
+
+.theme-dimas {
+  --theme-primary: #d97706;
+  --theme-primary-hover: #b45309;
+  --theme-secondary: #eab308;
+  --theme-light-bg: rgba(217, 119, 6, 0.09);
+  --theme-border: rgba(217, 119, 6, 0.25);
+  --theme-shadow: rgba(217, 119, 6, 0.35);
+  --theme-dark-bg: rgba(217, 119, 6, 0.18);
+  --theme-dark-text: #fbbf24;
+  --theme-gradient: linear-gradient(to right, #d97706, #eab308);
+}
+
+/* Dynamic Helper Utilities */
+.app-theme-primary {
+  color: var(--theme-primary, #f97316) !important;
+}
+:where(.dark, .dark *) .app-theme-primary-dark {
+  color: var(--theme-dark-text, #fb923c) !important;
+}
+
+.app-theme-bg {
+  background-color: var(--theme-primary, #f97316) !important;
+}
+.app-theme-bg-hover:hover {
+  background-color: var(--theme-primary-hover, #ea580c) !important;
+}
+
+.app-theme-bg-subtle {
+  background-color: var(--theme-light-bg, rgba(249, 115, 22, 0.09)) !important;
+}
+:where(.dark, .dark *) .app-theme-bg-subtle-dark {
+  background-color: var(--theme-dark-bg, rgba(249, 115, 22, 0.18)) !important;
+}
+
+.app-theme-border {
+  border-color: var(--theme-border, rgba(249, 115, 22, 0.25)) !important;
+}
+.app-theme-border-solid {
+  border-color: var(--theme-primary, #f97316) !important;
+}
+
+.app-theme-gradient {
+  background-image: var(--theme-gradient, linear-gradient(to right, #f97316, #f59e0b)) !important;
+}
+
+.app-theme-shadow {
+  box-shadow: 0 10px 25px -5px var(--theme-shadow, rgba(249, 115, 22, 0.35)) !important;
+}
+
+.app-theme-focus:focus {
+  border-color: var(--theme-primary, #f97316) !important;
+}
+
+
