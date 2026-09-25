@@ -5,6 +5,8 @@ import HeroBentoSection from './components/HeroBentoSection.vue'
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
 import MainMenu from './components/MainMenu.vue'
+import heroBG from '@/assets/hero-bg.jpg'
+import heroFS from '@/assets/hero-fs.jpg'
 
 // --- State Management ---
 const currentPage = ref('home') // 'home' | 'login' | 'register' | 'menu'
@@ -294,8 +296,8 @@ onUnmounted(() => {
       <section id="hero" class="pt-12 relative">
         <ScrollExpandMedia
           mediaType="image"
-          mediaSrc="/hero-bg.jpg"
-          bgImageSrc="/hero-fs.jpg"
+          :mediaSrc="heroBG"
+          :bgImageSrc="heroFS"
           title="NITIP MAKANAN GAMPANG SPLIT BILL TENANG!"
           scrollToExpand="Scroll Down"
         >
