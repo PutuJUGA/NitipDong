@@ -5,6 +5,8 @@ import HeroBentoSection from './components/HeroBentoSection.vue'
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
 import MainMenu from './components/MainMenu.vue'
+import CardDetailModal from './components/CardDetailModal.vue'
+import { Sparkles, ArrowRight } from 'lucide-vue-next'
 import heroBG from '@/assets/hero-bg.jpg'
 import heroFS from '@/assets/hero-fs.jpg'
 
@@ -13,6 +15,81 @@ const currentPage = ref('home') // 'home' | 'login' | 'register' | 'menu'
 const isLoading = ref(false)
 const authUser = ref(null)
 const activeSection = ref('utama')
+
+// Step Cards Interactive Detail Modal State
+const selectedStepModalCard = ref(null)
+const isStepModalOpen = ref(false)
+
+const stepsCardsData = [
+  {
+    id: 'langkah-1',
+    type: 'step',
+    badge: 'LANGKAH 01',
+    icon: '1️⃣',
+    colorClass: 'bg-orange-500 text-white shadow-orange-500/30',
+    title: 'Buat Room & Share Link',
+    subtitle: 'Bikin room titipan makanan dan bagikan tautan unik ke grup WhatsApp sirkelmu.',
+    description: 'Cukup buka NitipDong, beri nama room pesananmu (misal: "Ayam Geprek Pak Agus"), lalu salin tautan instan atau scan QR code untuk disebarkan ke sirkel kantor/kampus.',
+    interactiveType: 'room-builder',
+    highlights: [
+      { title: 'Pembuatan Room 5 Detik', desc: 'Tanpa form rumit. Cukup ketik nama room dan room langsung aktif.' },
+      { title: 'Pengaturan Rekening Host', desc: 'Sematkan nomor BCA/Mandiri/QRIS host agar teman bisa langsung bayar tepat waktu.' },
+      { title: 'Pengunci Waktu Otomatis', desc: 'Set timer penutupan order (misal 11:45 WIB) agar tidak ada pesanan susulan terlambat.' },
+      { title: 'Dukungan Multi-Merchant', desc: 'Bisa dipakai untuk pesanan GoFood, GrabFood, ShopeeFood, maupun jajan kantin.' }
+    ],
+    tips: [
+      'Gunakan nama room yang jelas beserta tempat makan yang dituju.',
+      'Buka room lebih awal sebelum jam makan siang agar semua teman sempat menginput menu.'
+    ]
+  },
+  {
+    id: 'langkah-2',
+    type: 'step',
+    badge: 'LANGKAH 02',
+    icon: '2️⃣',
+    colorClass: 'bg-amber-500 text-white shadow-amber-500/30',
+    title: 'Teman Isi Pesanan Sendiri',
+    subtitle: 'Temanmu tinggal buka link dan memilih menu makanannya masing-masing secara langsung.',
+    description: 'Anggota sirkel yang menerima link tinggal mengklik menu makanan yang diinginkan, menyesuaikan porsi, serta memberikan instruksi kustom tanpa perlu mengganggu koordinator.',
+    interactiveType: 'order-picker',
+    highlights: [
+      { title: 'Antarmuka Ramah Mobile', desc: 'Desain sangat ringan dan cepat diakses melalui browser smartphone manapun.' },
+      { title: 'Input Catatan Kustom', desc: 'Teman bebas menginput permintaan khusus seperti "es batu sedikit" atau "level 5 pedas".' },
+      { title: 'Total Tagihan Sementara Live', desc: 'Teman bisa langsung melihat estimasi biaya sementara sebelum pesanan dikirim.' },
+      { title: 'Fitur Edit & Batalkan', desc: 'Selama room belum dikunci host, teman bisa mengubah atau menambah item pesanan.' }
+    ],
+    tips: [
+      'Pastikan teman memeriksa kembali catatan pesanan sebelum menekan tombol simpan.',
+      'Setiap perubahan pesanan akan memicu update instan di dashboard host.'
+    ]
+  },
+  {
+    id: 'langkah-3',
+    type: 'step',
+    badge: 'LANGKAH 03',
+    icon: '3️⃣',
+    colorClass: 'bg-emerald-500 text-white shadow-emerald-500/30',
+    title: 'Auto Split & Pantau Lunas',
+    subtitle: 'Sistem menghitung total ongkir + pajak, dan memperbarui status Lunas/Ngutang secara real-time.',
+    description: 'Begitu makanan dipesan, masukan total biaya final. NitipDong akan membagi tagihan per orang secara presisi, lalu memantau pelunasan transfer hingga 100% tuntas.',
+    interactiveType: 'payment-settle',
+    highlights: [
+      { title: 'Kalkulasi Otomatis Seketika', desc: 'Menghitung bagian tiap orang secara transparan tanpa kalkulator fisik.' },
+      { title: 'Scan QRIS Langsung', desc: 'Teman cukup scan QRIS di layar HP untuk bayar via GoPay, OVO, ShopeePay, atau Mobile Banking.' },
+      { title: 'Status Terverifikasi Real-Time', desc: 'Host menanggulangi status pembayaran dengan satu ketukan tombol LUNAS.' },
+      { title: 'Ringkasan Laporan Transparan', desc: 'Dapat menyimpan bukti rincian tagihan sebagai transparansi keuangan sirkel.' }
+    ],
+    tips: [
+      'Verifikasi bukti transfer dari teman sebelum mengubah status menjadi LUNAS.',
+      'Gunakan rincian nota NitipDong sebagai bukti transparan jika ada pertanyaan dari anggota.'
+    ]
+  }
+]
+
+const openStepDetail = (index) => {
+  selectedStepModalCard.value = stepsCardsData[index]
+  isStepModalOpen.value = true
+}
 
 // Auth Google Simulation
 const loginWithGoogle = async () => {
@@ -344,42 +421,94 @@ onUnmounted(() => {
               CARA KERJA <span class="text-orange-500">NITIPDONG</span>
             </h2>
             <p class="text-slate-600 text-base max-w-lg mx-auto font-medium">
-              Tiga langkah simpel dari titip makanan sampai tagihan lunas tanpa canggung.
+              Tiga langkah simpel dari titip makanan sampai tagihan lunas tanpa canggung. <span class="text-orange-600 font-bold underline decoration-wavy decoration-orange-400">Klik card untuk panduan! ✦</span>
             </p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-orange-400 transition-colors">
-              <div class="w-12 h-12 rounded-2xl bg-orange-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-orange-500/30">
-                1
+            <!-- Langkah 1 Card -->
+            <div 
+              @click="openStepDetail(0)"
+              class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            >
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-orange-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
+                    1
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-extrabold flex items-center gap-1 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                    <Sparkles class="w-3 h-3" /> Detail Langkah ✦
+                  </span>
+                </div>
+                <h3 class="text-xl font-black text-slate-900 group-hover:text-orange-600 transition-colors">Buat Room & Share Link</h3>
+                <p class="text-slate-600 text-sm font-medium leading-relaxed">
+                  Bikin room titipan makanan dan bagikan tautan unik ke grup WhatsApp sirkelmu.
+                </p>
               </div>
-              <h3 class="text-xl font-black text-slate-900">Buat Room & Share Link</h3>
-              <p class="text-slate-600 text-sm font-medium leading-relaxed">
-                Bikin room titipan makanan dan bagikan tautan unik ke grup WhatsApp sirkelmu.
-              </p>
+
+              <div class="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold text-orange-500 group-hover:text-orange-600">
+                <span class="flex items-center gap-1">Lihat Visual & Panduan <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" /></span>
+              </div>
             </div>
 
-            <div class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-orange-400 transition-colors">
-              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-amber-500/30">
-                2
+            <!-- Langkah 2 Card -->
+            <div 
+              @click="openStepDetail(1)"
+              class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            >
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
+                    2
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-extrabold flex items-center gap-1 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                    <Sparkles class="w-3 h-3" /> Detail Langkah ✦
+                  </span>
+                </div>
+                <h3 class="text-xl font-black text-slate-900 group-hover:text-amber-600 transition-colors">Teman Isi Pesanan Sendiri</h3>
+                <p class="text-slate-600 text-sm font-medium leading-relaxed">
+                  Temanmu tinggal buka link dan memilih menu makanannya masing-masing secara langsung.
+                </p>
               </div>
-              <h3 class="text-xl font-black text-slate-900">Teman Isi Pesanan Sendiri</h3>
-              <p class="text-slate-600 text-sm font-medium leading-relaxed">
-                Temanmu tinggal buka link dan memilih menu makanannya masing-masing secara langsung.
-              </p>
+
+              <div class="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold text-amber-600">
+                <span class="flex items-center gap-1">Lihat Visual & Panduan <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" /></span>
+              </div>
             </div>
 
-            <div class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-orange-400 transition-colors">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                3
+            <!-- Langkah 3 Card -->
+            <div 
+              @click="openStepDetail(2)"
+              class="bg-slate-50 border-2 border-orange-100 p-8 rounded-3xl relative space-y-4 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            >
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-black text-xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+                    3
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-extrabold flex items-center gap-1 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                    <Sparkles class="w-3 h-3" /> Detail Langkah ✦
+                  </span>
+                </div>
+                <h3 class="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors">Auto Split & Pantau Lunas</h3>
+                <p class="text-slate-600 text-sm font-medium leading-relaxed">
+                  Sistem menghitung total ongkir + pajak, dan memperbarui status Lunas/Ngutang secara real-time.
+                </p>
               </div>
-              <h3 class="text-xl font-black text-slate-900">Auto Split & Pantau Lunas</h3>
-              <p class="text-slate-600 text-sm font-medium leading-relaxed">
-                Sistem menghitung total ongkir + pajak, dan memperbarui status Lunas/Ngutang secara real-time.
-              </p>
+
+              <div class="pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold text-emerald-600">
+                <span class="flex items-center gap-1">Lihat Visual & Panduan <ArrowRight class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" /></span>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Interactive Detail Modal for Langkah Mudah -->
+        <CardDetailModal 
+          :isOpen="isStepModalOpen" 
+          :cardData="selectedStepModalCard" 
+          @close="isStepModalOpen = false" 
+        />
       </section>
     </template>
 
