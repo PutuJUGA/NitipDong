@@ -4,7 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-base: '/NitipDong/',
+  base: '/',
+  server: {
+    allowedHosts: true
+  },
   plugins: [
     vue(),
     tailwindcss(),

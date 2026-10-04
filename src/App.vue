@@ -227,11 +227,23 @@ onMounted(() => {
     const saved = localStorage.getItem('nitipdong_profile')
     if (saved) {
       const parsed = JSON.parse(saved)
-      if (authUser.value) {
-        authUser.value = { ...authUser.value, ...parsed }
-      }
+      authUser.value = parsed
     }
   } catch (e) {}
+
+  // Jika teman membuka via link undangan WhatsApp (?room=...)
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('room')) {
+    if (!authUser.value) {
+      authUser.value = {
+        name: 'Teman Sirkel',
+        email: 'teman@sirkel.com',
+        avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=TemanSirkel',
+        phone: '08123456789'
+      }
+    }
+    currentPage.value = 'menu'
+  }
 })
 
 onUnmounted(() => {

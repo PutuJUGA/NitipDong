@@ -258,6 +258,18 @@ const rooms = ref([
 
 const activeRoomId = ref('room-1')
 
+// Otomatis pilih room jika dibuka lewat tautan undangan ?room=
+if (typeof window !== 'undefined') {
+  const params = new URLSearchParams(window.location.search)
+  const roomCode = params.get('room')
+  if (roomCode) {
+    const matched = rooms.value.find(r => r.inviteCode === roomCode || r.id === roomCode)
+    if (matched) {
+      activeRoomId.value = matched.id
+    }
+  }
+}
+
 // Current Active Room
 const currentRoom = computed(() => {
   return rooms.value.find(r => r.id === activeRoomId.value) || rooms.value[0] || null
@@ -478,18 +490,45 @@ const executeDeleteRoom = () => {
   showToast(`Room "${deletedName}" berhasil dihapus 🗑️`)
 }
 
+// Helper to get active public web URL dynamically (ngrok, custom domain, or localhost)
+const savedTunnelUrl = ref(typeof window !== 'undefined' ? (localStorage.getItem('nitipdong_custom_url') || '') : '')
+
+const getPublicAppUrl = () => {
+  if (typeof window !== 'undefined') {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    
+    // Jika dibuka langsung dari ngrok atau domain publik, gunakan & simpan alamat origin tersebut
+    if (!isLocal) {
+      const activeUrl = window.location.origin
+      localStorage.setItem('nitipdong_custom_url', activeUrl)
+      savedTunnelUrl.value = activeUrl
+      return activeUrl
+    }
+    
+    // Jika dibuka di localhost, prioritaskan URL publik ngrok yang tersimpan
+    if (savedTunnelUrl.value) {
+      return savedTunnelUrl.value.replace(/\/$/, '')
+    }
+
+    // Default tunnel ngrok aktif Anda saat ini
+    return 'https://deputy-flock-manicure.ngrok-free.dev'
+  }
+  return 'https://nitipdong.com'
+}
+
 // Copy & WhatsApp Handlers
 const copyRoomLink = () => {
   if (!currentRoom.value) return
-  const url = `https://nitipdong.com/join/${currentRoom.value.inviteCode}`
+  const url = `${getPublicAppUrl()}/?room=${currentRoom.value.inviteCode}`
   navigator.clipboard?.writeText(url)
-  showToast('Link room tersalin ke clipboard! 📋')
+  showToast('Link room publik tersalin ke clipboard! 📋')
 }
 
 const shareRoomToWhatsApp = () => {
   if (!currentRoom.value) return
   const r = currentRoom.value
-  const text = `Halo guys! Yuk isi titipan makanan bareng di *NitipDong* 🍱\n\n📌 *Room:* ${r.name}\n🏪 *Resto:* ${r.resto}\n⏰ *Batas Pesan:* ${r.targetTime}\n\n👉 Klik link untuk isi pesananmu sendiri:\nhttps://nitipdong.com/join/${r.inviteCode}`
+  const roomUrl = `${getPublicAppUrl()}/?room=${r.inviteCode}`
+  const text = `Halo guys! Yuk isi titipan makanan bareng di *NitipDong* 🍱\n\n📌 *Room:* ${r.name}\n🏪 *Resto:* ${r.resto}\n⏰ *Batas Pesan:* ${r.targetTime}\n\n👉 Klik link untuk isi pesananmu sendiri:\n${roomUrl}`
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')
 }
 
@@ -497,6 +536,7 @@ const sendWhatsAppBill = (order) => {
   if (!currentRoom.value) return
   const r = currentRoom.value
   const feeLabel = r.splitType === 'equal' ? 'Bagi Rata' : 'Proporsional'
+  const roomUrl = `${getPublicAppUrl()}/?room=${r.inviteCode}`
   const text = `🍱 *Tagihan NitipDong - Titip Makanan*\n\nHalo *${order.personName}*! Ini rincian pesananmu:\n` +
     `• ${order.itemName} (${order.qty}x) = Rp ${order.itemTotal.toLocaleString('id-ID')}\n` +
     (order.notes ? `  _(Catatan: ${order.notes})_\n` : '') +
@@ -505,6 +545,7 @@ const sendWhatsAppBill = (order) => {
     `--------------------------------\n` +
     `*TOTAL YANG HARUS DITRANSFER: Rp ${order.finalBill.toLocaleString('id-ID')}*\n\n` +
     `💳 Pembayaran via:\n*${r.bankInfo.bank}*: \`${r.bankInfo.accountNumber}\`\na/n *${r.bankInfo.accountName}*\n\n` +
+    `🔗 Cek detail room:\n${roomUrl}\n\n` +
     `Makasih ya! Tolong kabari kalau sudah transfer 🙏`
 
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')

@@ -57,6 +57,10 @@ const waShared = ref(false)
 
 const generatedLink = computed(() => {
   const slug = customRoomName.value.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-') || 'room-titip'
+  if (typeof window !== 'undefined') {
+    const activeHost = `${window.location.host}${window.location.pathname}`.replace(/\/$/, '')
+    return `${activeHost}?room=${slug}`
+  }
   return `nitipdong.com/join/${slug}`
 })
 
