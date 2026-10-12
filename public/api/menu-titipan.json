@@ -1,0 +1,98 @@
+[
+  {
+    "id": "menu-1",
+    "name": "Paket Ayam Geprek Sambal Matah",
+    "resto": "Ayam Geprek Bensu",
+    "category": "Makanan",
+    "price": 28000,
+    "rating": 4.8,
+    "prepTime": "15 mnt",
+    "image": "🍗",
+    "description": "Ayam krispi gurih dengan ulekan cabai rawit dan irisan bawang segar khas Bali.",
+    "isRecommended": true
+  },
+  {
+    "id": "menu-2",
+    "name": "Bebek Goreng Bumbu Hitam Madura",
+    "resto": "Bebek Sinjay & Bumbu Hitam",
+    "category": "Makanan",
+    "price": 38000,
+    "rating": 4.9,
+    "prepTime": "20 mnt",
+    "image": "🦆",
+    "description": "Bebek ungkep empuk berpadu bumbu rempah hitam pekat gurih nan pedas nikmat.",
+    "isRecommended": true
+  },
+  {
+    "id": "menu-3",
+    "name": "Dimsum Mentai Mozzarella (4 pcs)",
+    "resto": "DIMSUM TITI Premium",
+    "category": "Snack",
+    "price": 26000,
+    "rating": 4.7,
+    "prepTime": "12 mnt",
+    "image": "🥟",
+    "description": "Dimsum ayam udang lembut disiram saus mentai bakar dan keju mozzarella leleh.",
+    "isRecommended": false
+  },
+  {
+    "id": "menu-4",
+    "name": "Tahu Telor Bumbu Kacang Petis",
+    "resto": "Tahu Telor Budhe Yuni",
+    "category": "Makanan",
+    "price": 20000,
+    "rating": 4.9,
+    "prepTime": "10 mnt",
+    "image": "🍳",
+    "description": "Dadar tahu telur renyah disiram petis gurih kental dengan taburan tauge dan bawang goreng.",
+    "isRecommended": true
+  },
+  {
+    "id": "menu-5",
+    "name": "Kopi Susu Gula Aren Mantan (Large)",
+    "resto": "Kopi Kenangan",
+    "category": "Minuman",
+    "price": 22000,
+    "rating": 4.8,
+    "prepTime": "8 mnt",
+    "image": "☕",
+    "description": "Espresso blend spesial dipadu susu segar creamy dan sirup gula aren murni.",
+    "isRecommended": true
+  },
+  {
+    "id": "menu-6",
+    "name": "Matcha Cream Cheese Cloud",
+    "resto": "Toast Bar & Brew",
+    "category": "Minuman",
+    "price": 25000,
+    "rating": 4.6,
+    "prepTime": "7 mnt",
+    "image": "🍵",
+    "description": "Matcha Uji Jepang otentik dengan lapisan busa krim keju gurih lembut di atasnya.",
+    "isRecommended": false
+  },
+  {
+    "id": "menu-7",
+    "name": "Croffle Salted Caramel Crunchy",
+    "resto": "Sweet Bites Bakery",
+    "category": "Snack",
+    "price": 24000,
+    "rating": 4.7,
+    "prepTime": "10 mnt",
+    "image": "🥐",
+    "description": "Croissant waffle karamelisasi renyah dengan lelehan saus karamel asin dan remah biskuit.",
+    "isRecommended": false
+  },
+  {
+    "id": "menu-8",
+    "name": "Es Teh Melati Solo Jumbo",
+    "resto": "Dapur Nusantara",
+    "category": "Minuman",
+    "price": 8000,
+    "rating": 4.9,
+    "prepTime": "5 mnt",
+    "image": "🧋",
+    "description": "Racikan teh wasgitel khas Solo wangi bunga melati yang segar melegakan dahaga.",
+    "isRecommended": true
+  }
+]

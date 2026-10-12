@@ -24,10 +24,12 @@ import {
   LayoutDashboard,
   Radio,
   Settings,
+  Database,
   User as UserIcon
 } from 'lucide-vue-next'
 import ProfileSettingModal from './ProfileSettingModal.vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
+import ApiMenuExplorer from './ApiMenuExplorer.vue'
 import { getThemeById, getThemeByAvatarUrl } from '@/utils/theme'
 
 const props = defineProps({
@@ -152,8 +154,27 @@ const showToast = (msg) => {
   }, 2600)
 }
 
-// Active Feature Section View: 'all' | 'calculator' | 'orders' | 'radar'
+// Active Feature Section View: 'all' | 'calculator' | 'orders' | 'radar' | 'api'
 const activeNav = ref('all')
+
+// Handler tambah pesanan dari Rekomendasi Menu
+const handleOrderFromApi = (orderData) => {
+  if (!currentRoom.value) {
+    showToast('Pilih atau buat room terlebih dahulu untuk menitip makanan ini!')
+    return
+  }
+  const newOrder = {
+    id: Date.now(),
+    personName: orderData.personName || profileData.value.name || 'Saya',
+    itemName: `${orderData.name} (${orderData.resto})`,
+    notes: orderData.notes || '', // Catatan kustom dari pengguna (tanpa teks rekomendasi API)
+    basePrice: orderData.price,
+    qty: orderData.qty || 1,
+    isPaid: false
+  }
+  currentRoom.value.orders.push(newOrder)
+  showToast(`Berhasil menambahkan "${orderData.name}" ke daftar pesanan! 🍱`)
+}
 
 // Filter Status Pesanan: 'all' | 'unpaid' | 'paid'
 const orderFilter = ref('all')
@@ -709,6 +730,24 @@ const selectRoom = (id) => {
             <Calculator class="w-4 h-4" />
             <span>Kalkulator Split-Bill</span>
           </button>
+
+          <button 
+            @click="activeNav = 'api'"
+            class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer text-left"
+            :class="activeNav === 'api' ? 'text-white shadow-md' : 'text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800'"
+            :style="activeNav === 'api' ? { backgroundColor: currentTheme.primary, boxShadow: `0 8px 20px -4px ${currentTheme.shadow}` } : {}"
+          >
+            <div class="flex items-center gap-3">
+              <ShoppingBag class="w-4 h-4" />
+              <span>Eksplor Jajanan</span>
+            </div>
+            <span 
+              class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
+              :class="activeNav === 'api' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'"
+            >
+              HOT
+            </span>
+          </button>
         </div>
 
         <!-- Daftar Room Aktif (Quick Room Switcher) -->
@@ -829,6 +868,17 @@ const selectRoom = (id) => {
 
         <!-- Action Buttons di Top Bar -->
         <div class="flex items-center gap-2 sm:gap-3">
+          <button
+            @click="activeNav = activeNav === 'api' ? 'all' : 'api'"
+            class="px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+            :class="activeNav === 'api' ? 'bg-orange-500 text-white border-orange-500 shadow-xs' : 'border-orange-200 dark:border-zinc-700 text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-zinc-800 hover:bg-orange-100'"
+            title="Eksplor Menu & Jajanan"
+          >
+            <ShoppingBag class="w-3.5 h-3.5" />
+            <span class="hidden sm:inline">{{ activeNav === 'api' ? 'Kembali ke Room' : 'Eksplor Menu' }}</span>
+            <span class="sm:hidden">Menu</span>
+          </button>
+
           <button 
             @click="showNewRoomModal = true"
             class="px-3.5 py-1.5 rounded-xl text-white font-black text-xs transition flex items-center gap-1.5 cursor-pointer"
@@ -866,6 +916,14 @@ const selectRoom = (id) => {
       <!-- BODY CONTENT -->
       <main class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto">
         
+        <!-- TAMPILAN API EXPLORER (WEEK 4 REST & FETCH API) -->
+        <ApiMenuExplorer
+          v-if="activeNav === 'api'"
+          :currentTheme="currentTheme"
+          @add-order="handleOrderFromApi"
+        />
+
+        <template v-else>
         <!-- EMPTY STATE JIKA SEMUA ROOM DIHAPUS -->
         <div 
           v-if="rooms.length === 0" 
@@ -1421,6 +1479,7 @@ const selectRoom = (id) => {
             </div>
 
           </div>
+        </template>
         </template>
       </main>
 

@@ -135,6 +135,18 @@ const goToMenu = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+const goToApiDemo = () => {
+  if (!authUser.value) {
+    authUser.value = {
+      name: 'Budi Pratama',
+      email: 'budi.pratama@gmail.com',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Budi',
+    }
+  }
+  currentPage.value = 'menu'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 const handleAuthSuccess = (userData) => {
   authUser.value = userData
   try {
@@ -295,6 +307,15 @@ onUnmounted(() => {
           :class="currentPage === 'home' && activeSection === 'cara-kerja' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-slate-600 hover:text-orange-500'"
         >
           Cara Kerja
+        </button>
+
+        <button 
+          @click="goToApiDemo"
+          class="px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 hover:text-orange-500 text-slate-700"
+          title="Eksplor Rekomendasi Menu & Jajanan"
+        >
+          <span>🍽️</span>
+          <span>Eksplor Menu</span>
         </button>
 
         <!-- Menu Utama (Hanya tampil ketika user sudah login) -->
