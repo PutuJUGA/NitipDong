@@ -41,8 +41,16 @@ NitipDong/
 ├── vite.config.js      # Konfigurasi Vite & Tailwind plugin
 ├── public/
 │   └── favicon.svg     # Brand logo favicon
-└── src/
-    ├── App.vue         # Halaman utama (Landing Page NitipDong)
-    ├── main.js         # Entry point Vue app
-    └── style.css       # Tailwind CSS base styles
+├── src/
+│   ├── App.vue         # Halaman utama (Landing Page NitipDong)
+│   ├── main.js         # Entry point Vue app
+│   └── style.css       # Tailwind CSS base styles
+├── week4 - API/        # Week 4: REST API & Explorer
+├── week5 - PHP/        # Week 5: Server-Side Rendering (PHP Prosedural)
+└── week7/              # Pertemuan 7: Arsitektur MVC (Task 02 Build the Controller)
+    ├── Controller/     # TitipanController.php (index, show, process, handleRequest)
+    ├── Model/          # Titipan.php (Katalog data & kalkulasi split bill)
+    ├── View/           # titipan-page.php (Dashboard) & titipan-detail.php (Detail)
+    ├── index.php       # Entry Point / Front Controller
+    └── README.md       # Dokumentasi & panduan modul MVC
 ```
