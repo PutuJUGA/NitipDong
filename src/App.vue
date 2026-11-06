@@ -146,7 +146,6 @@ const goToApiDemo = () => {
   currentPage.value = 'menu'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-
 const handleAuthSuccess = (userData) => {
   authUser.value = userData
   try {
@@ -317,7 +316,6 @@ onUnmounted(() => {
           <span>🍽️</span>
           <span>Eksplor Menu</span>
         </button>
-
         <!-- Menu Utama (Hanya tampil ketika user sudah login) -->
         <button 
           v-if="authUser"

@@ -175,7 +175,6 @@ const handleOrderFromApi = (orderData) => {
   currentRoom.value.orders.push(newOrder)
   showToast(`Berhasil menambahkan "${orderData.name}" ke daftar pesanan! 🍱`)
 }
-
 // Filter Status Pesanan: 'all' | 'unpaid' | 'paid'
 const orderFilter = ref('all')
 
@@ -730,7 +729,6 @@ const selectRoom = (id) => {
             <Calculator class="w-4 h-4" />
             <span>Kalkulator Split-Bill</span>
           </button>
-
           <button 
             @click="activeNav = 'api'"
             class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer text-left"
@@ -878,7 +876,6 @@ const selectRoom = (id) => {
             <span class="hidden sm:inline">{{ activeNav === 'api' ? 'Kembali ke Room' : 'Eksplor Menu' }}</span>
             <span class="sm:hidden">Menu</span>
           </button>
-
           <button 
             @click="showNewRoomModal = true"
             class="px-3.5 py-1.5 rounded-xl text-white font-black text-xs transition flex items-center gap-1.5 cursor-pointer"
