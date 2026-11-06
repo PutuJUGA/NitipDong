@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "nomorUrut": "01",
+    "judul": "Paket Ayam Geprek Sambal Matah",
+    "kandidat": "Ayam Geprek Bensu",
+    "kategori": "Makanan Berat",
+    "target": "Estimasi 15 Menit",
+    "anggaran": "Rp 28.000",
+    "status": "Prioritas Utama",
+    "deskripsi": "Ayam krispi gurih dengan ulekan cabai rawit dan irisan bawang segar khas Bali. Menu favorit makan siang sirkel.",
+    "icon": "🍗"
+  },
+  {
+    "id": 2,
+    "nomorUrut": "02",
+    "judul": "Bebek Goreng Bumbu Hitam Madura",
+    "kandidat": "Bebek Sinjay & Rempah Madura",
+    "kategori": "Makanan Berat",
+    "target": "Estimasi 20 Menit",
+    "anggaran": "Rp 38.000",
+    "status": "Siap Dipesan",
+    "deskripsi": "Bebek ungkep empuk berpadu bumbu rempah hitam pekat gurih nan pedas nikmat disajikan dengan serundeng gurih.",
+    "icon": "🦆"
+  },
+  {
+    "id": 3,
+    "nomorUrut": "03",
+    "judul": "Dimsum Mentai Mozzarella (4 pcs)",
+    "kandidat": "DIMSUM TITI Premium",
+    "kategori": "Cemilan & Snack",
+    "target": "Estimasi 12 Menit",
+    "anggaran": "Rp 26.000",
+    "status": "Promo Diskon",
+    "deskripsi": "Dimsum ayam udang lembut disiram saus mentai bakar dan keju mozzarella leleh. Camilan nikmat saat nugas bareng.",
+    "icon": "🥟"
+  },
+  {
+    "id": 4,
+    "nomorUrut": "04",
+    "judul": "Tahu Telor Bumbu Kacang Petis",
+    "kandidat": "Tahu Telor Budhe Yuni",
+    "kategori": "Makanan Berat",
+    "target": "Estimasi 10 Menit",
+    "anggaran": "Rp 20.000",
+    "status": "Prioritas Utama",
+    "deskripsi": "Dadar tahu telur renyah disiram petis gurih kental dengan taburan tauge dan bawang goreng porsi mengenyangkan.",
+    "icon": "🍳"
+  },
+  {
+    "id": 5,
+    "nomorUrut": "05",
+    "judul": "Kopi Susu Gula Aren Mantan (Large)",
+    "kandidat": "Kopi Kenangan",
+    "kategori": "Minuman Segar",
+    "target": "Estimasi 8 Menit",
+    "anggaran": "Rp 22.000",
+    "status": "Siap Dipesan",
+    "deskripsi": "Espresso blend spesial dipadu susu segar creamy dan sirup gula aren murni. Mood booster ampuh penyemangat hari.",
+    "icon": "☕"
+  },
+  {
+    "id": 6,
+    "nomorUrut": "06",
+    "judul": "Croffle Salted Caramel Crunchy",
+    "kandidat": "Sweet Bites & Toast Bar",
+    "kategori": "Cemilan & Snack",
+    "target": "Estimasi 10 Menit",
+    "anggaran": "Rp 24.000",
+    "status": "Menu Favorit",
+    "deskripsi": "Croissant waffle karamelisasi renyah dengan lelehan saus karamel asin dan remah biskuit gurih.",
+    "icon": "🥐"
+  }
+]
