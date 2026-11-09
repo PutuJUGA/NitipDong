@@ -126,11 +126,14 @@ const goToHome = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+const initialMainMenuNav = ref('all')
+
 const goToMenu = () => {
   if (!authUser.value) {
     goToLogin()
     return
   }
+  initialMainMenuNav.value = 'all'
   currentPage.value = 'menu'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -143,6 +146,20 @@ const goToApiDemo = () => {
       avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Budi',
     }
   }
+  initialMainMenuNav.value = 'api'
+  currentPage.value = 'menu'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const goToOrmDemo = () => {
+  if (!authUser.value) {
+    authUser.value = {
+      name: 'Budi Pratama',
+      email: 'budi.pratama@gmail.com',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Budi',
+    }
+  }
+  initialMainMenuNav.value = 'database'
   currentPage.value = 'menu'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -316,6 +333,16 @@ onUnmounted(() => {
           <span>🍽️</span>
           <span>Eksplor Menu</span>
         </button>
+
+        <!-- Shortcut Langsung ke Database & ORM (Week 9) -->
+        <button 
+          @click="goToOrmDemo"
+          class="px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 hover:text-orange-500 text-slate-700"
+          title="Kelola Database & Eloquent ORM (Week 9)"
+        >
+          <span>🗄️</span>
+          <span>Database ORM</span>
+        </button>
         <!-- Menu Utama (Hanya tampil ketika user sudah login) -->
         <button 
           v-if="authUser"
@@ -393,6 +420,7 @@ onUnmounted(() => {
     <template v-else-if="currentPage === 'menu'">
       <MainMenu 
         :user="authUser || { name: 'Budi Pratama', email: 'budi.pratama@gmail.com', avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Budi' }"
+        :initial-nav="initialMainMenuNav"
         @back-home="goToHome"
         @logout="handleLogout"
         @update-user="handleUpdateUser"

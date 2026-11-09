@@ -51,10 +51,17 @@ NitipDong/
 │   ├── Titipan.php     # Class Titipan, Enkapsulasi, Constructor & Methods
 │   ├── index.php       # Dynamic HTML Output render dari method-method objek
 │   └── README.md       # Panduan materi OOP PHP & instruksi eksekusi
-└── week7/              # Pertemuan 7: Arsitektur MVC (Model-View-Controller)
-    ├── Controller/     # TitipanController.php (Menerima request, panggil model, teruskan ke view)
-    ├── Model/          # Titipan.php (Class entitas, properti & logika bisnis split bill)
-    ├── View/           # view-titipan.php, titipan-page.php, titipan-detail.php (Format HTML rapi)
-    ├── index.php       # Entry Point / Front Controller
-    └── README.md       # Dokumentasi & panduan lengkap modul MVC
+├── week7/              # Pertemuan 7: Arsitektur MVC (Model-View-Controller)
+│   ├── Controller/     # TitipanController.php (Menerima request, panggil model, teruskan ke view)
+│   ├── Model/          # Titipan.php (Class entitas, properti & logika bisnis split bill)
+│   ├── View/           # view-titipan.php, titipan-page.php, titipan-detail.php (Format HTML rapi)
+│   ├── index.php       # Entry Point / Front Controller
+│   └── README.md       # Dokumentasi & panduan lengkap modul MVC
+└── week9/              # Pertemuan 9: Laravel CRUD + Eloquent ORM
+    ├── app/Http/       # TitipanController.php (method index & CRUD)
+    ├── app/Models/     # Kategori.php & Titipan.php (Relasi hasMany & belongsTo)
+    ├── database/       # Migrations multi-tabel (kategoris & titipans) & Seeders
+    ├── resources/      # index.blade.php (View Index Tailwind modern)
+    ├── routes/         # web.php (Route index & CRUD)
+    └── README.md       # Dokumentasi lengkap pemenuhan 7 langkah tugas
 ```

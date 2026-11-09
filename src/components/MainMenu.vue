@@ -30,6 +30,7 @@ import {
 import ProfileSettingModal from './ProfileSettingModal.vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
 import ApiMenuExplorer from './ApiMenuExplorer.vue'
+import OrmCrudManager from './OrmCrudManager.vue'
 import { getThemeById, getThemeByAvatarUrl } from '@/utils/theme'
 
 const props = defineProps({
@@ -41,6 +42,10 @@ const props = defineProps({
       avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Budi',
       themeId: 'budi'
     })
+  },
+  initialNav: {
+    type: String,
+    default: 'all'
   }
 })
 
@@ -154,8 +159,12 @@ const showToast = (msg) => {
   }, 2600)
 }
 
-// Active Feature Section View: 'all' | 'calculator' | 'orders' | 'radar' | 'api'
-const activeNav = ref('all')
+// Active Feature Section View: 'all' | 'calculator' | 'orders' | 'radar' | 'api' | 'database'
+const activeNav = ref(props.initialNav || 'all')
+
+watch(() => props.initialNav, (newNav) => {
+  if (newNav) activeNav.value = newNav
+})
 
 // Handler tambah pesanan dari Rekomendasi Menu
 const handleOrderFromApi = (orderData) => {
@@ -746,6 +755,25 @@ const selectRoom = (id) => {
               HOT
             </span>
           </button>
+
+          <!-- Menu Database & Eloquent ORM (Week 9 Laravel) -->
+          <button 
+            @click="activeNav = 'database'"
+            class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer text-left"
+            :class="activeNav === 'database' ? 'text-white shadow-md' : 'text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800'"
+            :style="activeNav === 'database' ? { backgroundColor: currentTheme.primary, boxShadow: `0 8px 20px -4px ${currentTheme.shadow}` } : {}"
+          >
+            <div class="flex items-center gap-3">
+              <Database class="w-4 h-4" />
+              <span>Database & ORM</span>
+            </div>
+            <span 
+              class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
+              :class="activeNav === 'database' ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300'"
+            >
+              WEEK 9
+            </span>
+          </button>
         </div>
 
         <!-- Daftar Room Aktif (Quick Room Switcher) -->
@@ -876,6 +904,18 @@ const selectRoom = (id) => {
             <span class="hidden sm:inline">{{ activeNav === 'api' ? 'Kembali ke Room' : 'Eksplor Menu' }}</span>
             <span class="sm:hidden">Menu</span>
           </button>
+
+          <!-- Shortcut Database ORM di Top Bar -->
+          <button
+            @click="activeNav = activeNav === 'database' ? 'all' : 'database'"
+            class="px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+            :class="activeNav === 'database' ? 'bg-orange-500 text-white border-orange-500 shadow-xs' : 'border-orange-200 dark:border-zinc-700 text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-zinc-800 hover:bg-orange-100'"
+            title="Kelola Database & Eloquent ORM (Week 9)"
+          >
+            <Database class="w-3.5 h-3.5" />
+            <span class="hidden sm:inline">{{ activeNav === 'database' ? 'Kembali ke Room' : 'Database ORM' }}</span>
+            <span class="sm:hidden">DB</span>
+          </button>
           <button 
             @click="showNewRoomModal = true"
             class="px-3.5 py-1.5 rounded-xl text-white font-black text-xs transition flex items-center gap-1.5 cursor-pointer"
@@ -918,6 +958,13 @@ const selectRoom = (id) => {
           v-if="activeNav === 'api'"
           :currentTheme="currentTheme"
           @add-order="handleOrderFromApi"
+        />
+
+        <!-- TAMPILAN DATABASE & ELOQUENT ORM CRUD (WEEK 9 LARAVEL CRUD + ORM) -->
+        <OrmCrudManager
+          v-else-if="activeNav === 'database'"
+          :currentTheme="currentTheme"
+          @add-to-room="handleOrderFromApi"
         />
 
         <template v-else>
