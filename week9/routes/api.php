@@ -132,3 +132,4 @@ Route::get('/kategoris', function () {
         'data'    => Kategori::withCount('titipans')->get(),
     ]);
 });
+
