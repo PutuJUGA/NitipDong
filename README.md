@@ -20,7 +20,7 @@
    npm install
    ```
 
-2. **Jalankan development server:**
+2. **Jalankan development server (Frontend Vue):**
    ```bash
    npm run dev
    ```
@@ -33,7 +33,7 @@
 
 ---
 
-## 📁 Struktur Direktori
+## 📁 Struktur Direktori & Modul Praktikum
 ```text
 NitipDong/
 ├── index.html          # HTML entry point & font links
@@ -47,10 +47,14 @@ NitipDong/
 │   └── style.css       # Tailwind CSS base styles
 ├── week4 - API/        # Week 4: REST API & Explorer
 ├── week5 - PHP/        # Week 5: Server-Side Rendering (PHP Prosedural)
-└── week7/              # Pertemuan 7: Arsitektur MVC (Task 02 Build the Controller)
-    ├── Controller/     # TitipanController.php (index, show, process, handleRequest)
-    ├── Model/          # Titipan.php (Katalog data & kalkulasi split bill)
-    ├── View/           # titipan-page.php (Dashboard) & titipan-detail.php (Detail)
+├── week6/              # Pertemuan 6: Pemrograman Berorientasi Objek (OOP PHP)
+│   ├── Titipan.php     # Class Titipan, Enkapsulasi, Constructor & Methods
+│   ├── index.php       # Dynamic HTML Output render dari method-method objek
+│   └── README.md       # Panduan materi OOP PHP & instruksi eksekusi
+└── week7/              # Pertemuan 7: Arsitektur MVC (Model-View-Controller)
+    ├── Controller/     # TitipanController.php (Menerima request, panggil model, teruskan ke view)
+    ├── Model/          # Titipan.php (Class entitas, properti & logika bisnis split bill)
+    ├── View/           # view-titipan.php, titipan-page.php, titipan-detail.php (Format HTML rapi)
     ├── index.php       # Entry Point / Front Controller
-    └── README.md       # Dokumentasi & panduan modul MVC
+    └── README.md       # Dokumentasi & panduan lengkap modul MVC
 ```

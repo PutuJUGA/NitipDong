@@ -1,118 +1,156 @@
-# Pertemuan 7 - Web Programming: Task 02: Build the Controller
+# Pertemuan 7 - Web Programming: Arsitektur Model-View-Controller (MVC)
 
-Implementasi arsitektur **Controller** pada pola **Model-View-Controller (MVC)** yang disesuaikan 100% dengan tema proyek **NitipDong 🍱** (Aplikasi Titip Beli Makanan & Split Bill Sirkel Kampus/Kantor).
+Implementasi pola arsitektur **Model-View-Controller (MVC)** yang disesuaikan 100% dengan tema proyek **NitipDong 🍱** (Aplikasi Titip Beli Makanan & Split Bill Sirkel Kampus/Kantor).
 
 ---
 
-## 🎯 Pemenuhan Tugas Praktikum (Task 02)
+## 🎯 Pemenuhan 3 Komponen Utama MVC
 
-Sesuai materi slide perkuliahan **Pertemuan 7 - Web Programming: Task 02 Build the Controller**:
-> *"Buat Controller yang menangani request halaman PresidenKu dan mengarahkan proses ke bagian yang sesuai."*  
-> *(Diimplementasikan secara kontekstual & fungsional penuh pada tema **NitipDong**)*
+Sesuai instruksi praktikum, sistem telah dipisahkan secara tegas berdasarkan prinsip *Separation of Concerns*:
 
-### 📊 Diagram Alur Request ➔ Controller ➔ View:
+| Komponen | Berkas / Direktori | Tanggung Jawab & Implementasi |
+| :--- | :--- | :--- |
+| **1. MODEL** | [`week7/Model/Titipan.php`](Model/Titipan.php) | Berisi class `Titipan`, properti data room & pesanan sirkel, method manipulasi data (CRUD), logika bisnis kalkulasi keuangan split bill, serta persistensi session. |
+| **2. CONTROLLER** | [`week7/Controller/TitipanController.php`](Controller/TitipanController.php) | Berisi class `TitipanController` yang menerima request HTTP (`handleRequest`), mengeksekusi method (`index()`, `show()`, `process()`), memanggil Model, dan meneruskan data terstruktur ke View. |
+| **3. VIEW** | [`week7/View/view-titipan.php`](View/view-titipan.php)<br>[`week7/View/titipan-page.php`](View/titipan-page.php)<br>[`week7/View/titipan-detail.php`](View/titipan-detail.php) | Menerima variabel data siap pakai dari Controller (`extract($data)`) dan menampilkannya dalam format antarmuka HTML modern, responsif, dan rapi ke browser menggunakan Tailwind CSS. |
+
+---
+
+## 📊 Diagram Alur Sistem: Request ➔ Controller ➔ Model ➔ View
+
 ```text
-  [ USER ]
-     │
-     ▼ (HTTP GET / POST)
-  [ REQUEST ]
-     │
-     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 TITIPAN CONTROLLER                          │
-│               (TitipanController.php)                       │
-│                                                             │
-│   ├── index()   ➔ Ambil seluruh pesanan & render dashboard   │
-│   ├── show()    ➔ Ambil rincian pesanan ID & render detail   │
-│   └── process() ➔ Proses tambah, toggle bayar, hapus, reset │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ (Panggil Model / Mutasi Data)
-                       ▼
-                 [ MODEL: Titipan ]
-                       │
-                       ▼
-                 [ VIEW: titipan-page / titipan-detail ]
+  [ USER / BROWSER ]
+          │
+          ▼ (HTTP GET / POST)
+   [ index.php (Front Controller) ]
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          TITIPAN CONTROLLER                             │
+│                       (TitipanController.php)                           │
+│                                                                         │
+│   ├── handleRequest() ➔ Routing parameter action / id / form POST       │
+│   ├── index()         ➔ Ambil seluruh pesanan, format data & render UI  │
+│   ├── show($id)       ➔ Ambil detail rincian pesanan ID & render invoice│
+│   ├── process($act)   ➔ Proses tambah, toggle bayar, hapus, reset data │
+│   └── render($view)   ➔ Extract data payload & include berkas View      │
+└───────────────────┬─────────────────────────────────┬───────────────────┘
+                    │                                 │
+                    │ 1. Panggil Model                │ 2. Teruskan Data
+                    ▼                                 ▼
+┌──────────────────────────────────────┐  ┌───────────────────────────────┐
+│               MODEL                  │  │             VIEW              │
+│           (Titipan.php)              │  │     (view-titipan.php &       │
+│                                      │  │     titipan-detail.php)       │
+│  - Properti: $roomInfo,              │  │                               │
+│              $daftarPesanan          │  │  - Render HTML Tailwind rapi  │
+│  - Method:                           │  │  - Hero Info Room & Deadline  │
+│    • getRoomInfo()                   │  │  - Kartu Metrik Keuangan      │
+│    • getAllPesanan()                 │  │  - Filter & Grid Kartu Pesanan│
+│    • getPesananById($id)             │  │  - Form Tambah Cepat          │
+│    • tambahPesanan(...)              │  │  - Tombol Ubah Status Lunas   │
+│    • toggleStatusBayar($id)          │  │  - Generator Pesan WhatsApp   │
+│    • hapusPesanan($id)               │  │  - Detail Invoice Personal    │
+│    • getStatistik()                  │  └───────────────┬───────────────┘
+│    • simpanKeSession()               │                  │
+└──────────────────────────────────────┘                  │ Render Tampilan
+                                                          ▼
+                                                  [ TAMPILAN BROWSER ]
 ```
 
 ---
 
-## ✅ Checklist Evaluasi Task 02
-
-| Checklist | Status | Implementasi pada NitipDong |
-| :--- | :---: | :--- |
-| **Controller berjalan** | ✅ | Berkas `week7/Controller/TitipanController.php` berjalan sebagai kelas controller OOP. |
-| **Request diterima** | ✅ | Method `handleRequest()` menangani query parameters (`action`, `id`, `filter`) dan form data `$_POST`. |
-| **Method dapat dijalankan** | ✅ | Tersedia dan berjalan penuh method `index()`, `show($id)`, dan `process($action)`. |
-| **Model dapat dipanggil** | ✅ | Controller memanggil `Titipan::getRoomInfo()`, `getAllPesanan()`, `getPesananById()`, `tambahPesanan()`, `toggleStatusBayar()`, `hapusPesanan()`, `getStatistik()`. |
-| **View dapat ditampilkan** | ✅ | Controller meneruskan payload data terstruktur ke View `titipan-page.php` (dashboard) dan `titipan-detail.php` (invoice rincian). |
-
----
-
-## 🏗️ Struktur Berkas MVC NitipDong
+## 🏗️ Struktur Berkas & Direktori Proyek
 
 ```text
 week7/
 ├── Controller/
-│   └── TitipanController.php    # CONTROLLER: Request handling, method index/show/process, data formatting
+│   └── TitipanController.php    # CONTROLLER: Request handler, method index/show/process, data formatting
 ├── Model/
 │   └── Titipan.php              # MODEL: Entitas room, daftar pesanan sirkel, logika kalkulasi split bill
 ├── View/
-│   ├── titipan-page.php         # VIEW 1: Dashboard utama daftar titipan, form input, generator WhatsApp
-│   └── titipan-detail.php       # VIEW 2: Tampilan detail rincian pesanan penitip (dipanggil oleh show())
+│   ├── view-titipan.php         # VIEW UTAMA: Alias view-titipan yang memuat halaman dashboard utama
+│   ├── titipan-page.php         # VIEW DASHBOARD: Desain HTML antarmuka daftar titipan, form input, generator WA
+│   ├── titipan-detail.php       # VIEW DETAIL: Desain HTML rincian pesanan penitip (dipanggil oleh show())
+│   └── index.php                # VIEW ALIAS: Alias view utama
 ├── index.php                    # ENTRY POINT: Front Controller yang menginisialisasi TitipanController
-└── README.md                    # Dokumentasi pemenuhan tugas praktikum
+└── README.md                    # Dokumentasi pemenuhan tugas praktikum MVC
 ```
 
 ---
 
-## 🧩 Penjelasan Lengkap Method Controller (`TitipanController.php`)
+## 🧩 Penjelasan Lengkap Komponen MVC
 
-### 1. `handleRequest(): void`
-- Berperan sebagai **router internal / request dispatcher**.
-- Membaca parameter `$_GET['action']`:
-  - `action=index` (default): Menjalankan method `index()`.
-  - `action=show`: Mengambil `id` dari `$_GET['id']` lalu menjalankan method `show($id)`.
-  - `action=process`: Mengambil sub-aksi (`tambah`, `toggle-bayar`, `hapus`, `reset`) lalu menjalankan `process($action)`.
-  - Pintasan langsung `action=tambah`, `action=toggle-bayar`, dsb. otomatis dialihkan ke method `process()`.
+### 1. MODEL (`Model/Titipan.php`)
+Model bertanggung jawab murni atas data dan logika bisnis (tanpa markup presentasi HTML/CSS):
+* **Class:** `Titipan`
+* **Properti Data:**
+  * `$roomInfo` (array): Menyimpan data room titipan (`idRoom`, `namaRoom`, `host`, `kontakHost`, `rekeningHost`, `targetResto`, `deadlineOrder`, `statusRoom`).
+  * `$daftarPesanan` (array): Koleksi data titipan rekan sirkel (`id`, `namaPenitip`, `menu`, `resto`, `catatan`, `harga`, `isLunas`, `metodeBayar`, `waktuInput`, `avatar`).
+* **Method Pengelolaan Data & Logika Bisnis:**
+  * `getRoomInfo(): array`: Mengembalikan metadata host dan rekening room.
+  * `getAllPesanan(): array`: Mengembalikan seluruh koleksi daftar titipan.
+  * `getPesananById(int $id): ?array`: Mengembalikan satu pesanan spesifik berdasarkan ID.
+  * `tambahPesanan(string $nama, string $menu, string $resto, int $harga, string $catatan): bool`: Validasi dan menambah entri titipan baru dengan ID inkremental otomatis dan avatar emoji acak.
+  * `toggleStatusBayar(int $id): bool`: Mengubah status pembayaran (Lunas $\leftrightarrow$ Belum Bayar/Utang).
+  * `hapusPesanan(int $id): bool`: Membatalkan atau menghapus pesanan tertentu.
+  * `resetData(): void`: Menghapus session dan mengembalikan data ke daftar demo bawaan NitipDong.
+  * `getStatistik(): array`: Menghitung total tagihan, jumlah lunas, sisa utang, persentase pelunasan, dan rata-rata pengeluaran per orang.
+  * `simpanKeSession(): void`: Menyimpan perubahan data ke dalam `$_SESSION['nitipdong_pesanan']` agar mutasi data tersimpan nyata antar-request.
 
-### 2. `index(): void`
-- Menangani request tampilan utama dashboard titipan.
-- **Memanggil Model**:
-  - `$this->model->getRoomInfo()` untuk data host & deadline.
-  - `$this->model->getAllPesanan()` untuk katalog pesanan teman.
-  - `$this->model->getStatistik()` untuk kalkulasi split bill (total tagihan, terkumpul, sisa utang).
-- **Pemrosesan Data Presentasi**:
-  - Format angka rupiah (`formatRupiah()`).
-  - Penomoran dinamis `#01`, `#02`, dst.
-  - Penentuan styling Tailwind badge status (`LUNAS` warna hijau, `BELUM BAYAR` warna merah).
-  - Penyusunan template pesan siaran WhatsApp kolektif (`generateWhatsAppText()`).
-- **Meneruskan Data ke View**:
-  - Memanggil `$this->render('titipan-page', $viewData)`.
+---
 
-### 3. `show(int $id): void`
-- Menangani request untuk melihat rincian / detail pesanan spesifik dari satu orang penitip.
-- **Memanggil Model**:
-  - `$this->model->getPesananById($id)`.
-  - `$this->model->getRoomInfo()`.
-- **Pemrosesan Data**:
-  - Menyiapkan invoice ringkas pesanan, detail catatan kustom, instruksi nomor rekening host.
-  - Menyusun pesan pengingat WhatsApp personal (`generatePersonalWhatsAppReminder()`) untuk menagih teman yang belum lunas.
-- **Meneruskan Data ke View**:
-  - Memanggil `$this->render('titipan-detail', $viewData)`.
+### 2. CONTROLLER (`Controller/TitipanController.php`)
+Controller bertindak sebagai perantara yang menerima input pengguna, berinteraksi dengan Model, dan memilih View:
+* **Class:** `TitipanController`
+* **Properti:** `private Titipan $model`
+* **Method:**
+  * `handleRequest(): void`: **Router/Dispatcher** yang membaca `$_GET['action']` dan mengarahkan alur ke method yang sesuai (`index`, `show`, `process`).
+  * `index(): void`: Menangani tampilan utama. Memanggil Model (`getRoomInfo`, `getAllPesanan`, `getStatistik`), menerapkan filter opsional (semua / lunas / belum bayar), memformat data rupiah dan badge status, lalu memanggil `render('titipan-page', $viewData)`.
+  * `show(int $id): void`: Menangani rincian satu pesanan. Memanggil Model (`getPesananById`), menyusun template teks WhatsApp reminder personal, lalu memanggil `render('titipan-detail', $viewData)`.
+  * `process(?string $action): void`: Menangani request mutasi data (tambah pesanan dari form POST, toggle bayar, hapus, reset demo), mengatur flash message notifikasi di session, dan melakukan redirect aman ke `index.php`.
+  * `render(string $viewName, array $data = []): void`: Mengekstrak array data menjadi variabel lokal (`extract($data)`) lalu me-require berkas View yang dituju.
+  * `generateWhatsAppText(...)`: Helper untuk menghasilkan pesan rekap tagihan seluruh sirkel yang siap disalin ke grup WhatsApp.
+  * `generatePersonalWhatsAppReminder(...)`: Helper untuk menghasilkan teks reminder tagihan personal ke penitip yang belum bayar.
 
-### 4. `process(?string $action): void`
-- Mengimplementasikan alur: `REQUEST -> CONTROLLER (process()) -> PROCESS -> REDIRECT / VIEW`.
-- Memproses berbagai macam aksi mutasi data:
-  - **`tambah`**: Memvalidasi form input POST (Nama, Menu, Resto, Harga, Catatan), lalu memanggil `$this->model->tambahPesanan()`.
-  - **`toggle-bayar`**: Memperbarui status pembayaran antara lunas dan belum bayar via `$this->model->toggleStatusBayar($id)`.
-  - **`hapus`**: Membatalkan pesanan teman via `$this->model->hapusPesanan($id)`.
-  - **`reset`**: Mengembalikan seluruh data ke kondisi awal via `$this->model->resetData()`.
-- Menetapkan Flash Notification di Session (`$_SESSION['flash_notif']`) dan melakukan redirect aman ke `index.php`.
+---
 
-### 5. `render(string $viewName, array $data = []): void`
-- Mengisolasi logika rendering view.
-- Mengekstrak data array menjadi variabel PHP lokal (`extract($data)`).
-- Me-require berkas view dari folder `View/`.
+### 3. VIEW (`View/view-titipan.php`, `View/titipan-page.php`, `View/titipan-detail.php`)
+View murni menangani presentasi visual antarmuka pengguna ke browser:
+* **Variabel yang Diterima:** `$room`, `$pesanan`, `$stat`, `$waText`, `$filterAktif`, `$pesanNotif`, `$item`, `$personalWaText`.
+* **Fitur Antarmuka yang Ditampilkan:**
+  * **Header & Indikator Status MVC:** Menampilkan identitas berkas aktif Controller, Model, dan View.
+  * **Room Banner & Statistik Keuangan Split Bill:** Kartu Total Tagihan, Terkumpul (Lunas), Sisa Utang, Rata-Rata per Orang, dan Bar Progres Pelunasan Dinamis.
+  * **Formulir Entri Cepat:** Form input tambah titipan yang terhubung ke controller via method POST.
+  * **Katalog Titipan Teman:** Grid kartu interaktif dengan badge status pembayaran, nomor urut otomatis, tombol **Detail** (`show()`), tombol **Tandai Lunas/Utang** (`process()`), dan tombol **Hapus**.
+  * **Generator Tagihan WhatsApp Sirkel:** Kotak teks rekap siap salin dalam 1 klik (*copy-to-clipboard*) dan tombol pintasan buka aplikasi WhatsApp.
+  * **Halaman Invoice Detail (`titipan-detail.php`):** Tampilan rincian invoice individu penitip, informasi rekening transfer host, dan template pengingat WhatsApp personal.
+
+---
+
+### 4. FRONT CONTROLLER (`index.php`)
+Sebagai *single entry point* aplikasi web:
+```php
+<?php
+require_once __DIR__ . '/Controller/TitipanController.php';
+
+$controller = new TitipanController();
+$controller->handleRequest();
+```
+
+---
+
+## ✅ Checklist Evaluasi Praktikum MVC
+
+| Kriteria Praktikum | Status | Bukti Implementasi |
+| :--- | :---: | :--- |
+| **1. Folder & File Model Tersedia** | ✅ | Folder `Model/` dan berkas `Titipan.php` berisi class data, properti, dan method pengelolaan titipan. |
+| **2. Folder & File Controller Tersedia** | ✅ | Folder `Controller/` dan berkas `TitipanController.php` menerima request, memanggil model, dan meneruskan data. |
+| **3. Folder & File View Tersedia** | ✅ | Folder `View/` dan berkas `view-titipan.php` / `titipan-page.php` / `titipan-detail.php` menampilkan HTML rapi ke browser. |
+| **4. Controller Berjalan & Routing Request** | ✅ | Method `handleRequest()` menangani parameter `action`, `id`, `filter`, dan `$_POST`. |
+| **5. Method index(), show(), process() Lengkap** | ✅ | Berjalan penuh dengan redirect & flash message notification. |
+| **6. Model Terintegrasi & Fungsional** | ✅ | Operasi CRUD, penghitungan statistik, dan persistensi session berjalan optimal. |
+| **7. Tampilan HTML Rapi & Responsif** | ✅ | Menggunakan Tailwind CSS, kartu metrik, progress bar, badge status, dan typography modern. |
 
 ---
 
@@ -130,19 +168,20 @@ http://localhost:8000
 ```
 
 ### Opsi 2: Menggunakan XAMPP (Apache)
-1. Pastikan folder repositori atau folder `week7` berada di dalam direktori `C:\xampp\htdocs\`.
-2. Nyalakan modul **Apache** melalui XAMPP Control Panel.
+1. Salin atau pastikan folder proyek berada di direktori web root XAMPP (misal `C:\xampp\htdocs\`).
+2. Aktifkan modul **Apache** melalui XAMPP Control Panel.
 3. Buka browser pada alamat:
    ```text
    http://localhost/NitipDong-main/week7/
    ```
-   *(atau `http://localhost/week7/` jika folder disalin langsung ke root htdocs)*
 
 ---
 
-## 💡 Uji Coba Fitur Controller Langsung di Browser
+## 💡 Panduan Uji Coba Fitur di Browser
 
-1. **Uji Method `index()`**: Buka `http://localhost:8000/index.php`. Halaman dashboard titipan dan ringkasan split bill akan tampil.
-2. **Uji Method `process()` (Tambah)**: Isi formulir entri cepat di bagian atas dengan nama teman baru dan klik **Tambah Titipan**. Pesanan baru akan langsung bertambah dengan kalkulasi total otomatis.
-3. **Uji Method `process()` (Toggle Bayar)**: Klik tombol **Tandai Lunas ✓** pada salah satu pesanan yang berstatus belum bayar. Status akan berganti menjadi lunas, kartu pesanan menjadi hijau, dan progress bar bertambah.
-4. **Uji Method `show()` (Detail)**: Klik tombol **🔍 Detail** pada salah satu pesanan. Browser akan diarahkan ke `index.php?action=show&id=1` yang menampilkan invoice rincian pesanan dan teks tagihan WhatsApp personal.
+1. **Dashboard Utama (`index()`):** Akses `http://localhost:8000/`. Dashboard menampilkan rekap room, metrik keuangan split bill, daftar pesanan, dan form entri cepat.
+2. **Tambah Titipan Baru (`process('tambah')`):** Isi Nama Penitip, Menu, Resto, dan Harga di form atas, lalu klik **Tambah Titipan**. Data akan bertambah dan metrik keuangan terhitung ulang secara instan.
+3. **Ubah Status Lunas / Utang (`process('toggle-bayar')`):** Klik tombol **Tandai Lunas ✓** atau **Ubah ke Utang** pada salah satu pesanan. Status badge dan progress bar akan langsung diperbarui.
+4. **Lihat Rincian / Detail Pesanan (`show($id)`):** Klik tombol **🔍 Detail** pada salah satu pesanan. Anda akan diarahkan ke `index.php?action=show&id=X` yang menampilkan rincian invoice dan teks tagihan personal.
+5. **Salin Tagihan WhatsApp:** Klik tombol **Salin Teks WhatsApp** di bagian bawah untuk menyalin seluruh rekap tagihan sirkel ke clipboard.
+6. **Reset Data:** Klik tombol **🔄 Reset Data Demo** untuk mengembalikan seluruh pesanan ke data awal NitipDong.
